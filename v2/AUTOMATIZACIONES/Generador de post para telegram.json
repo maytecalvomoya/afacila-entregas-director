@@ -1,0 +1,392 @@
+{
+  "name": "Generador de post para telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4193ad6d-76e1-4e21-8f98-fef074ee0f46",
+              "leftValue": "={{ $binary.imagen.fileName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1280,
+        -144
+      ],
+      "id": "8790b743-0796-4c45-adec-ba82001bc422",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Eres un redactor profesional especializado en crear publicaciones para canales de Telegram.\n\nTu tarea es generar un post atractivo, claro y profesional listo para publicarse directamente en Telegram.\n\nInformación proporcionada por el cliente:\n\nTEMA:\n{{ $json.body.descripcion }}\n\nInstrucciones obligatorias:\n\n* Usa únicamente la información del apartado TEMA como base del contenido.\n* No hagas preguntas ni pidas aclaraciones.\n* Si el tema es breve, amplíalo ligeramente para que el post tenga sentido y sea atractivo.\n* Mantén un tono profesional pero cercano.\n* Usa emojis relevantes para mejorar la lectura, pero sin abusar de ellos.\n* Organiza el texto para que sea fácil de leer en móvil.\n* Utiliza saltos de línea y párrafos cortos.\n* Si encaja de forma natural, añade una pequeña llamada a la acción al final.\n\nFormato del post:\n\n1. Primera línea: título llamativo con emoji.\n2. Cuerpo del texto con párrafos cortos.\n3. Emojis relacionados con el contenido.\n4. Texto optimizado para lectura rápida en Telegram.\n\nEl resultado debe ser únicamente el post final listo para publicar, sin explicaciones adicionales.\n"
+            },
+            {}
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        -224
+      ],
+      "id": "bfff35a5-606b-410a-9dbf-dc50393853bd",
+      "name": "Genera texto",
+      "credentials": {
+        "openAiApi": {
+          "id": "JyLSKk5ooJc9TW79",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Eres un redactor profesional especializado en crear publicaciones para canales de Telegram.\n\nTu tarea es generar un post atractivo, claro y profesional listo para publicarse directamente en Telegram.\n\nInformación proporcionada por el cliente:\n\nTEMA:\n{{ $json.body.descripcion }}\n\nInstrucciones obligatorias:\n\n* Usa únicamente la información del apartado TEMA como base del contenido.\n* No hagas preguntas ni pidas aclaraciones.\n* Si el tema es breve, amplíalo ligeramente para que el post tenga sentido y sea atractivo.\n* Mantén un tono profesional pero cercano.\n* Usa emojis relevantes para mejorar la lectura, pero sin abusar de ellos.\n* Organiza el texto para que sea fácil de leer en móvil.\n* Utiliza saltos de línea y párrafos cortos.\n* Si encaja de forma natural, añade una pequeña llamada a la acción al final.\n\nFormato del post:\n\n1. Primera línea: título llamativo con emoji.\n2. Cuerpo del texto con párrafos cortos.\n3. Emojis relacionados con el contenido.\n4. Texto optimizado para lectura rápida en Telegram.\n\nEl resultado debe ser únicamente el post final listo para publicar, sin explicaciones adicionales.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -832,
+        48
+      ],
+      "id": "72f7a43b-71e3-4c8a-bb7e-de9980cdb48e",
+      "name": "genera texto 2",
+      "alwaysOutputData": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "JyLSKk5ooJc9TW79",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "=Eres un generador de prompts para crear imágenes profesionales destinadas a acompañar publicaciones en Telegram.\n\nTu tarea es transformar la información proporcionada por el usuario en una descripción visual clara que permita generar una imagen atractiva, moderna y profesional.\n\nInformación proporcionada por el cliente:\n\nTEMA:\n{{ $('webhook generar').item.json.body.descripcion }}\n\nInstrucciones obligatorias:\n\n* Usa únicamente la información del apartado TEMA como base de la imagen.\n* No hagas preguntas ni solicites aclaraciones.\n* Si el tema es breve, interpreta el concepto y crea una escena visual que represente claramente la idea.\n* La imagen debe ser profesional, visualmente atractiva y adecuada para una publicación en redes sociales.\n* Prioriza un estilo moderno, limpio y fácil de entender.\n* Incluye elementos visuales relacionados con tecnología, comunicación digital o innovación cuando encaje con el tema.\n* La composición debe ser clara, con un punto focal principal.\n* Evita texto largo dentro de la imagen.\n* Formato optimizado para redes sociales.\n\nCaracterísticas visuales deseadas:\n\n* Estilo moderno y profesional\n* Colores equilibrados y atractivos\n* Iluminación limpia\n* Composición clara\n* Alta calidad\n* Diseño atractivo para redes sociales\n\nEl resultado debe ser únicamente la descripción visual detallada de la imagen a generar, sin explicaciones adicionales.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        48
+      ],
+      "id": "993a6417-6244-40b0-8cb6-53e203177cf3",
+      "name": "genera imagen",
+      "credentials": {
+        "openAiApi": {
+          "id": "JyLSKk5ooJc9TW79",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/api/vistaprevia-post/",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "texto",
+              "value": "={{ $('genera texto 2').item.json.output[0].content[0].text }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "imagen",
+              "inputDataFieldName": "={{ $json.fileName }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -272,
+        48
+      ],
+      "id": "339d0300-aceb-4ca0-b53b-1dcbcf66d569",
+      "name": "envía a Django texto e imagen"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/api/vistaprevia-post/",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "texto",
+              "value": "={{ $json.output[0].content[0].text }}"
+            },
+            {
+              "name": "imagen",
+              "value": "==$binary.imagen"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -464,
+        -224
+      ],
+      "id": "0d5acbcb-9169-484f-b436-dc1c14f2bc9d",
+      "name": "envía a Django texto"
+    },
+    {
+      "parameters": {
+        "chatId": "-1003726795786",
+        "text": "={{ $json.texto_recibido }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        48
+      ],
+      "id": "53d3e769-dc5b-4298-b0d6-de46af9a5945",
+      "name": "postear texto",
+      "webhookId": "73e8bc6f-89dd-4662-9c67-f0d201aef3e2",
+      "credentials": {
+        "telegramApi": {
+          "id": "1zaLhW5N7BRDecWg",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $json.result.sender_chat.id }}",
+        "file": "={{ $('genera imagen').item.json.id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        176,
+        48
+      ],
+      "id": "869ded21-34c7-468e-93bb-ca7ebfeb44c9",
+      "name": "postear imagen",
+      "webhookId": "32233990-5221-43bc-8b02-3f6b14b3fda3",
+      "credentials": {
+        "telegramApi": {
+          "id": "HqIGWfbCXMz570kH",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        -192
+      ],
+      "id": "69065de1-8a8d-4ade-9bee-7d7278174a41",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generar-publicacion",
+        "options": {
+          "binaryData": false
+        }
+      },
+      "id": "3ca23524-d914-47e3-ad2b-2acafbb5841c",
+      "name": "webhook generar",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        -144
+      ],
+      "webhookId": "de2d0963-e301-4797-859e-9b22de4f6dfe",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "path": "eb02e31f-0313-462d-857b-1a466ac87328",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1536,
+        320
+      ],
+      "id": "2fead58a-615f-4ef3-a7b9-2b77a43af189",
+      "name": "Webhook postear",
+      "webhookId": "eb02e31f-0313-462d-857b-1a466ac87328"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Genera texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "genera texto 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genera texto": {
+      "main": [
+        [
+          {
+            "node": "envía a Django texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "genera texto 2": {
+      "main": [
+        [
+          {
+            "node": "genera imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "genera imagen": {
+      "main": [
+        [
+          {
+            "node": "envía a Django texto e imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "envía a Django texto": {
+      "main": [
+        []
+      ]
+    },
+    "envía a Django texto e imagen": {
+      "main": [
+        [
+          {
+            "node": "postear texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "postear texto": {
+      "main": [
+        [
+          {
+            "node": "postear imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        []
+      ]
+    },
+    "webhook generar": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "02084cdc-2e1b-401c-85d3-624245807c0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dcea5f2c3623514ad137859dfc85ba8a9f7009dcfdd7cf32d1ca77a878ca27bd"
+  },
+  "id": "ERBvwCNlRfDd3MIn",
+  "tags": []
+}

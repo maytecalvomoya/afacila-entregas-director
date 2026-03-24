@@ -1,0 +1,443 @@
+{
+  "name": "Campana envio emails",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "enviar_correo_electronico",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2160,
+        -1712
+      ],
+      "id": "7de15f5e-e307-4f4c-83e5-d2cde4b41d19",
+      "name": "Webhook",
+      "webhookId": "dd47ce50-e346-4247-955c-53010bb70a97"
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ $json.body.fecha_hora_inicio }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1712,
+        -1312
+      ],
+      "id": "1f9c5161-85f9-4a11-a2a8-a347b4f88ebe",
+      "name": "espera_fecha",
+      "webhookId": "820ccdd4-fe33-44b6-845c-3175453ac060",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "amount": "={{ Number($('variables_importantes').item.json.body.intervalo) }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -1328
+      ],
+      "id": "676fe8e3-d124-4145-8e3c-124ea7c7901d",
+      "name": "esperar intervalo",
+      "webhookId": "8085bbd4-42e2-4f08-8881-15a8bd8e6249",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sendTo": "=afacila.tfe@gmail.com",
+        "subject": "={{ $('variables_importantes').item.json.body.asunto }}",
+        "message": "={{ $('variables_importantes').item.json.body.mensaje }}",
+        "options": {
+          "bccList": "={{ $('variables_importantes').item.json.body.destinatarios }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        -1520
+      ],
+      "id": "102df254-7537-423c-9f80-2aadbcf66288",
+      "name": "Send a message",
+      "webhookId": "d8e05dc3-bfb3-4aaa-9d9f-151ab508c5ef",
+      "alwaysOutputData": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "jXFLJpsci6Ck8aIo",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.destinatarios",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -2096,
+        -1312
+      ],
+      "id": "45c3aed3-78be-4ce5-b379-a92066e644db",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"executionId\": {{ $execution.id }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -1936,
+        -1712
+      ],
+      "id": "6b66453a-4214-46a2-a405-b620dfc17885",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('variables_importantes').item.json.endpoint_django }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1440,
+        -1312
+      ],
+      "id": "2cfbecc8-eaab-4074-bca3-27856037fec4",
+      "name": "HTTP Request",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "63679bf1-9a1e-4b98-872f-0bfdb0afa87c",
+              "leftValue": "={{ $json.activada }}",
+              "rightValue": "activada",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1072,
+        -1504
+      ],
+      "id": "86c04b8a-030f-4759-a931-de5ee1c98dce",
+      "name": "Si activada"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4ba2e3d3-4b67-41df-b965-6642e9ce9432",
+              "leftValue": "={{ Date.now() }}",
+              "rightValue": "={{ new Date($('variables_importantes').item.json.body.fecha_hora_fin).getTime() }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -768,
+        -1520
+      ],
+      "id": "cf757c95-e973-4794-9180-be400fafc336",
+      "name": "Si fecha fin"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"id_suscripcion\": \"={{$json.body.id_suscripcion}}\"\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        -1488
+      ],
+      "id": "ee0d1ebe-13a9-46d6-b357-529d11a19a56",
+      "name": "id_suscripcion"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recojo todos los destinatarios del split\nconst destinatarios = items.map(i => i.json[\"body.destinatarios\"]);\n\n// Tomo el primer item como base\nconst base = { ...items[0].json };\n\n// Añado la lista de destinatarios\nbase.destinatarios = destinatarios;\n\n// Elimino el campo individual si existe\ndelete base[\"body.destinatarios\"];\n\n// Devuelvo un solo item\nreturn [{ json: base }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1904,
+        -1312
+      ],
+      "id": "06b756a3-2675-4f8e-a0d1-434962e253c6",
+      "name": "lista destinatarios"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88205eba-b58d-4ac1-a431-4d2d357f65a9",
+              "name": "body.fecha_hora_inicio",
+              "value": "={{ $json.body.fecha_hora_inicio }}:00+01:00",
+              "type": "string"
+            },
+            {
+              "id": "c2c6c612-bf77-433d-a6af-50b461601fdf",
+              "name": "body.fecha_hora_fin",
+              "value": "={{ $json.body.fecha_hora_fin }}:00+01:00",
+              "type": "string"
+            },
+            {
+              "id": "6691b5fb-a373-4f14-a367-2098edf0b8d7",
+              "name": "body.id_suscripcion",
+              "value": "={{ $json.body.id_suscripcion }}",
+              "type": "number"
+            },
+            {
+              "id": "e07baadc-618a-4dbc-b837-2175ec0a7571",
+              "name": "endpoint_django",
+              "value": "={{ \"http://host.docker.internal:8000/suscripcion/\" + $json.body.id_suscripcion + \"/estado/\" }}",
+              "type": "string"
+            },
+            {
+              "id": "000303b2-0294-4827-a8d3-72eed72e7afc",
+              "name": "body.asunto",
+              "value": "={{ $json.body.asunto }}",
+              "type": "string"
+            },
+            {
+              "id": "69abaad7-a8ad-4b38-8581-8bbd5ba9d028",
+              "name": "body.mensaje",
+              "value": "={{ $json.body.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "1a3ecb60-80ef-488f-94fd-3e05cc115548",
+              "name": "body.intervalo",
+              "value": "={{ $json.body.intervalo }}",
+              "type": "string"
+            },
+            {
+              "id": "c25b5b7c-70c4-424a-bcb4-2f45f359d3c9",
+              "name": "body.destinatarios",
+              "value": "={{ $json.body.destinatarios.join(',') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1712,
+        -1712
+      ],
+      "id": "0ff92c12-1d4a-4a96-8636-67da61fe6549",
+      "name": "variables_importantes"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "espera_fecha": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "esperar intervalo": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "id_suscripcion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "lista destinatarios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "variables_importantes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Si activada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si activada": {
+      "main": [
+        [
+          {
+            "node": "Si fecha fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si fecha fin": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "id_suscripcion": {
+      "main": [
+        [
+          {
+            "node": "esperar intervalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lista destinatarios": {
+      "main": [
+        [
+          {
+            "node": "espera_fecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables_importantes": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "dd5ed60d-e292-4165-92e9-a565702ce914",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dcea5f2c3623514ad137859dfc85ba8a9f7009dcfdd7cf32d1ca77a878ca27bd"
+  },
+  "id": "gtgwcjMwL08rBwyG",
+  "tags": []
+}

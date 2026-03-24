@@ -1,0 +1,328 @@
+{
+  "name": "Demo campana envio emails",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "demo_enviar_correo_electronico",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2160,
+        -1712
+      ],
+      "id": "075c70de-ce7d-4703-a78e-9197af3ca4d7",
+      "name": "Webhook",
+      "webhookId": "c91ac7db-b2e3-4e37-b79e-798261ce56a0"
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ $json.body.fecha_hora_inicio }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1712,
+        -1312
+      ],
+      "id": "ca953bd8-bbb7-4c42-b328-c926f055b173",
+      "name": "espera_fecha",
+      "webhookId": "b140615e-916b-4ad2-8340-b1ad962c37ad",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "amount": "={{ Number($('variables_importantes').item.json.body.intervalo) }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -832,
+        -1296
+      ],
+      "id": "49025b87-0eb0-42f7-8390-1e31730c1abb",
+      "name": "esperar intervalo",
+      "webhookId": "c3cd9844-fce2-4a20-a8c1-17b43d84e5a4",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sendTo": "=afacila.tfe@gmail.com",
+        "subject": "={{ $('variables_importantes').item.json.body.asunto }}",
+        "message": "={{ $('variables_importantes').item.json.body.mensaje }}",
+        "options": {
+          "bccList": "={{ $('variables_importantes').item.json.body.destinatarios }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1056,
+        -1296
+      ],
+      "id": "d91687f8-220b-4d1d-ace6-969844918404",
+      "name": "Send a message",
+      "webhookId": "a4716786-6024-45ab-ae7c-975db61470b1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "jXFLJpsci6Ck8aIo",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.destinatarios",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -2096,
+        -1312
+      ],
+      "id": "7bbd3804-c837-4225-b5de-e86395831c73",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"executionId\": {{ $execution.id }}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -1936,
+        -1712
+      ],
+      "id": "53311aea-48b6-4f58-9415-0c8e2099d8df",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4ba2e3d3-4b67-41df-b965-6642e9ce9432",
+              "leftValue": "={{ Date.now() }}",
+              "rightValue": "={{ new Date($('variables_importantes').item.json.body.fecha_hora_fin).getTime() }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1328,
+        -1312
+      ],
+      "id": "91ffb92c-0e35-4972-a310-b0af78e18237",
+      "name": "Si fecha fin"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recojo todos los destinatarios del split\nconst destinatarios = items.map(i => i.json[\"body.destinatarios\"]);\n\n// Tomo el primer item como base\nconst base = { ...items[0].json };\n\n// Añado la lista de destinatarios\nbase.destinatarios = destinatarios;\n\n// Elimino el campo individual si existe\ndelete base[\"body.destinatarios\"];\n\n// Devuelvo un solo item\nreturn [{ json: base }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1904,
+        -1312
+      ],
+      "id": "6b71849f-7cf0-4208-87c1-d019790d69e3",
+      "name": "lista destinatarios"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88205eba-b58d-4ac1-a431-4d2d357f65a9",
+              "name": "body.fecha_hora_inicio",
+              "value": "={{ $json.body.fecha_hora_inicio }}:00+01:00",
+              "type": "string"
+            },
+            {
+              "id": "c2c6c612-bf77-433d-a6af-50b461601fdf",
+              "name": "body.fecha_hora_fin",
+              "value": "={{ $json.body.fecha_hora_fin }}:00+01:00",
+              "type": "string"
+            },
+            {
+              "id": "000303b2-0294-4827-a8d3-72eed72e7afc",
+              "name": "body.asunto",
+              "value": "={{ $json.body.asunto }}",
+              "type": "string"
+            },
+            {
+              "id": "69abaad7-a8ad-4b38-8581-8bbd5ba9d028",
+              "name": "body.mensaje",
+              "value": "={{ $json.body.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "1a3ecb60-80ef-488f-94fd-3e05cc115548",
+              "name": "body.intervalo",
+              "value": "={{ $json.body.intervalo }}",
+              "type": "string"
+            },
+            {
+              "id": "c25b5b7c-70c4-424a-bcb4-2f45f359d3c9",
+              "name": "body.destinatarios",
+              "value": "={{ $json.body.destinatarios.join(',') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1712,
+        -1712
+      ],
+      "id": "f2ff6e17-d833-4a14-8a3b-b937fae20e8b",
+      "name": "variables_importantes"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "espera_fecha": {
+      "main": [
+        [
+          {
+            "node": "Si fecha fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "esperar intervalo": {
+      "main": [
+        [
+          {
+            "node": "Si fecha fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "esperar intervalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "lista destinatarios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "variables_importantes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si fecha fin": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lista destinatarios": {
+      "main": [
+        [
+          {
+            "node": "espera_fecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables_importantes": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "dc4dbaf9-a3b7-4a29-94f5-bb9dbccb4913",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dcea5f2c3623514ad137859dfc85ba8a9f7009dcfdd7cf32d1ca77a878ca27bd"
+  },
+  "id": "5Ai4FPpX0VEGMF29",
+  "tags": []
+}
