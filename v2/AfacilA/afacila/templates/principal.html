@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pantalla Principal</title>
+    <link rel="stylesheet" href="{% static 'css/estilos_vista_principal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilos_principal.css' %}">
+</head>
+<body>
+
+<div class="cabecera">
+    <a href="{% url 'login' %}">Iniciar sesión</a> | 
+    <a href="{% url 'registro' %}">Registrarse</a>
+</div>
+
+<div class="contenedor">
+    <div class="texto_bienvenida">
+        Bienvenido a AfacilA, donde podrás descubrir y adquirir automatizaciones sin necesidad de conocimientos técnicos.
+        Simplifica tus procesos y ahorra tiempo con soluciones listas para usar.
+    </div>
+    <div class="grupo_botones">
+    <a href="{% url 'catalogo' %}">
+        <button type="button" title="Pulsa el botón para acceder al catálogo de automatizaciones" class="boton">Catálogo de automatizaciones</button>
+    </a>
+    <a href="{% url 'mis_automatizaciones' %}">
+        <button type="button" title="Pulsa el botón para acceder a tu panel de automatizaciones" class="boton">Acceso a mis automatizaciones</button>
+    </a>
+</div>
+
+</div>
+
+<div class="pie">
+    <a href="{% url 'condiciones' %}">Condiciones de uso</a> | 
+    <a href="{% url 'privacidad' %}">Política de privacidad</a>
+</div>
+
+</body>
+</html>

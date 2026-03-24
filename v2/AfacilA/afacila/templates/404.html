@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Página no encontrada</title>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/estilos_catalogo.css' %}">
+
+<style>
+.contenedor-error{
+    text-align:center;
+    margin-top:100px;
+}
+
+.boton-volver{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 20px;
+    background:#4CAF50;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor-error">
+
+<h1>Error 404</h1>
+
+<p>La página que estás buscando no existe o no tienes acceso.</p>
+
+<a href="{% url 'mis_automatizaciones' %}" class="boton-volver">
+Volver a Mis automatizaciones
+</a>
+
+</div>
+
+</body>
+</html>

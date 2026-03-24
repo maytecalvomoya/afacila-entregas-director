@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo - Generación de post para redes sociales</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/estilos_catalogo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilos_demo_automatizaciones.css' %}">
+</head>
+
+<body>
+
+    {% if messages %}
+    <div class="contenedor-mensajes">
+        {% for message in messages %}
+            <div class="mensaje {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h1>Configuración de la generación de post para redes sociales - Telegram</h1>
+        <a href="{% url 'inicio' %}" class="enlace_inicio">Inicio</a>
+    </div>
+    {% if submitted %}
+        <div class="resultado">
+            {% if error %}
+                <p style="color:red;">Error al enviar: {{ error }}</p>
+            {% else %}
+                <p style="color:green;">Datos enviados al webhook (código HTTP: {{ status }}).</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Contenedor donde aparecerá la vista previa si existe-->
+    <div id="contenedor_vistaprevia">
+
+        {% if vistaprevia %}
+            <div class="contenedor_vistaprevia">
+                <h2>Vista previa del Post</h2>
+                <div class="contenido_vistaprevia">
+                    {% if vistaprevia.texto %}
+                        <div class="seccion_vistaprevia">
+                            <h3>Texto:</h3>
+                            <div class="caja_vistaprevia">{{ vistaprevia.texto }}</div>
+                        </div>
+                    {% endif %}
+
+                {% if vistaprevia and vistaprevia.texto != "PENDIENTE" %}
+                    <div class="seccion_vistaprevia">
+                        <h3>Imagen:</h3>
+                        <img src="{{ vistaprevia.imagen.url }}" style="max-width:400px;">
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div class="vistaprevia-acciones">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="confirmar">
+                    <button type="submit" class="boton boton_demo">Confirmar</button>
+                </form>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="rechazar">
+                    <button type="submit" class="boton boton_comprar">Rechazar</button>
+                </form>
+
+            </div>
+
+        </div>
+        {% else %}
+            <!-- Mensaje mientras se genera -->
+            {% if submitted %}
+                <p>Generando vista previa. Por favor, espere..</p>
+            {% endif %}
+
+        <!-- Formulario inicial -->
+            <div class="contenedor_formulario">
+                <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <label>Descripción del tema:</label>
+                    <textarea name="descripcion" required></textarea>
+                    <label>Foto (opcional):</label>
+                    <input type="file" name="imagen">
+                    <button type="submit" class="boton boton_demo">Enviar descripción</button>
+
+                </form>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+</div>
+
+<!--Comprobar si existe una vista previa. Si existe redirige a /vistaprevia-post/ para mostrarla -->
+<script>
+
+let vistapreviaMostrada = false;
+let frecuencia_comprobacion = setInterval(comprobar_si_vistaprevia, 3000); // consulta cada 3 segundos si ya existe una vista previa 
+
+async function comprobar_si_vistaprevia(){
+
+    if(vistapreviaMostrada) return;
+
+    try{
+        //Llama a la vista Django que devuelve la última vista previa en formato JSON
+        const response = await fetch("/api/obtener-vistaprevia/");
+        const data = await response.json();
+
+        if(data.existe){ //Si existe una vista pevia se detiene la consulta y se redirige automáticamente para mostrarla
+            //Evito la redirección en bucle
+            if (window.location.pathname === "/vistaprevia-post/") return;
+
+            clearInterval(frecuencia_comprobacion);
+            vistapreviaMostrada = true;
+
+            // redirige automáticamente para que el usuario pueda aceptar/rechazar la vista previa
+            window.location.href = "/vistaprevia-post/"; //llama a la vista mostrar_vistaprevia_post que muestra la vista previa y los botones de aceptar/rechazar
+
+        }
+
+    } catch(error){
+        console.log("Error consultando la vista previa:", error);
+    }
+
+}
+
+</script>
+
+</body>
+</html>

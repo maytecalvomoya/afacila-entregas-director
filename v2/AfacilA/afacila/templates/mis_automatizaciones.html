@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mis automatizaciones</title>
+
+<link rel="stylesheet" href="{% static 'css/estilos_mis_automatizaciones.css' %}">
+
+</head>
+<body>
+<div class="contenedor">
+<!--<h1>Mis automatizaciones</h1>-->
+<div class="cabecera">
+        <a href="{% url 'inicio' %}" class="enlace_inicio">Inicio</a>
+        <h1>Mis automatizaciones</h1>
+    </div>
+
+{% if suscripciones %}
+    {% for suscripcion in suscripciones %}
+        <div class="cajetin-automatizacion">
+            <h3>{{ suscripcion.automatizacion.nombre }}</h3>
+            <p>
+                <strong>Estado:</strong>
+                {% if suscripcion.activada %}
+                    Activada
+                {% else %}
+                    Desactivada
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Fecha de suscripción:</strong>
+                {{ suscripcion.fecha_suscripcion|date:"d/m/Y" }}
+            </p>
+
+            <p>
+                <strong>Fecha de caducidad:</strong>
+                {{ suscripcion.fecha_caducidad|date:"d/m/Y" }}
+            </p>
+
+            <div class="acciones">
+
+                <form method="post" action="{% url 'activar_desactivar_suscripcion' suscripcion.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="boton boton-activar-desactivar">
+                        {% if suscripcion.activada %}Desactivar{% else %}Activar{% endif %}
+                    </button>
+                </form>
+
+                {% if suscripcion.activada and suscripcion.config_url %}
+                    <a href="{{ suscripcion.config_url }}" class="boton boton-configurar">
+                        Configurar
+                    </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    {% endfor %}
+
+{% else %}
+
+<p>No ha comprado ninguna automatización.</p>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

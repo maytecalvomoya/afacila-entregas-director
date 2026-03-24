@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Automatizaciones</title>
+    <link rel="stylesheet" href="{% static 'css/estilos_catalogo.css' %}">
+</head>
+<body>
+
+<!--Para visualizar los mensajes de usuario-->
+{% if messages %}
+<div class="contenedor_mensaje">
+    {% for message in messages %}
+        <div class="mensaje_exito">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}   
+
+<div class="contenedor">
+    <div class="cabecera">
+        <a href="{% url 'inicio' %}" class="enlace_inicio">Inicio</a>
+        <h1>Catálogo de Automatizaciones</h1>
+        <div>
+            <h3>Prueba cada automatización gratis: tienes 2 ejecuciones de demostración antes de decidirte</h3>
+            <h3>Cuando te decidas, solo tendrás que seleccionar un plan y hacer clic en el botón "Comprar" para empezar a usarla.</h3>
+        </div>
+    </div>
+    <div class="catalogo">
+        <div class="automatizacion">
+            <h3>Campañas de email programadas</h3>
+            <p>Permite programar campañas de email entre una fecha de inicio y una fecha de fin, enviando mensajes automáticamente sin necesidad de intervención manual.<br/>
+                Ideal para gestionar comunicaciones periódicas con clientes, enviar recordatorios, campañas promocionales o distribuir contenido informativo de forma automática.
+            </p>
+            <div class="botones">
+                <a href="{% url 'demo_campana_envio_email' %}" class="boton boton_demo" title="Puedes realizar hasta un máximo de 2 ejecuciones">Acceso a Demo</a>
+                <form method="POST" action="{% url 'compra_campana_envio_email' %}" class="boton boton_comprar">
+                    {% csrf_token %}
+                    <select name="plan_suscripcion" id="plan_suscripcion" required>
+                        <option value="">-- Selecciona un plan --</option>
+                        {% for plan in planes %}
+                            <option value="{{ plan.tipo_suscripcion }}">{{ plan.tipo_suscripcion }} - {{ plan.precio }}€</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="boton boton_comprar">Comprar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="automatizacion">
+            <h3>Generación automática de post para redes sociales (Instagram)</h3>
+            <p>Genera contenido automáticamente para Instagram a partir de un tema definido por el usuario.<br/>
+                Crea publicaciones listas para compartir, permitiendo mantener una presencia constante en redes (Telegram) sin tener que escribir cada publicación manualmente.<br/>
+                Es especialmente para profesionales, pequeñas empresas o creadores de contenido que necesitan publicar regularmente.
+            </p>
+            <div class="botones">
+                <a href="{% url 'demo_generacion_post_redes_sociales' %}" class="boton boton_demo" title="Puedes realizar hasta un máximo de 2 ejecuciones">Acceso a Demo</a>
+                <form method="POST" action="{% url 'compra_generacion_post_redes_sociales' %}" class="boton boton_comprar">
+                    {% csrf_token %}
+                    <select name="plan_suscripcion" id="plan_suscripcion" required>
+                        <option value="">-- Selecciona un plan --</option>
+                        {% for plan in planes %}
+                            <option value="{{ plan.tipo_suscripcion }}">{{ plan.tipo_suscripcion }} - {{ plan.precio }}€</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="boton boton_comprar">Comprar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="automatizacion">
+            <!--Revisa periódicamente el precio de un producto en una página web. Detecta cambios de precio y envía alertas cuando el precio baja o cambia-->
+            <!--Parámetros configurables: url del producto a monitorizar, frecuencia de revisión del precio, precio objetivo o condición de alerta y correo electrónico donde recibir la notificación-->
+            <!--Un usuario puede monitorizar el precio de un dispositivo electrónico y recibir una alerta cuando su precio baje por debajo de un valor determinado-->
+            <h3>Monitor de precios de productos</h3>
+            <p>
+                Supervisa automáticamente el precio de productos en páginas web y envía una notificación duando detecta un cambio.<br/>
+                Esta automatización permite seguir la evolución de precios en tiendas online sin tener que comprobarlos manualmente.<br/>
+                Especialmente útil para empresas de comercio electrónico, análisis de competencia o usuarios que desean comprar un producto cuando su precio baja.
+            </p>
+            <div class="botones">
+                <a href="#" class="boton boton_demo" title="Puedes realizar hasta un máximo de 2 ejecuciones">Acceso a Demo</a>
+                <a href="#" class="boton boton_comprar">Comprar</a>
+            </div>
+        </div>
+        
+        <div class="automatizacion">
+            <!--Recopila noticias automáticamente desde diferentes fuentes, filtra noticias por tema o palabra clave, genera un resumen periódico y envía el resumen por email-->
+            <!--Parámetros configurabes: Tema o palabra clave de interés, frecuencia del resumen (diario o semanal), dirección de correo donde recibir el resumen-->
+            <!--Un profesional del sector tecnológico puede recibir cada mañana un resumen de las noticias más importantes sobre inteligencia artificial.-->
+            <h3>Resumen automático de noticias</h3>
+            <p>Recibe periódicamente un resumen de las noticias más relevantes sobre un tema específico.<br>
+                Recopila información de distintas fuentes, selecciona las noticias más relevantes y las envía en un resumen fácil de leer.<br>
+                Útil para profesionales que necesitan mantenerse informados sobre tendencias o novedades en su sector.
+            </p>
+            <div class="botones">
+                <a href="#" class="boton boton_demo" title="Puedes realizar hasta un máximo de 2 ejecuciones">Acceso a Demo</a>
+                <a href="#" class="boton boton_comprar">Comprar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

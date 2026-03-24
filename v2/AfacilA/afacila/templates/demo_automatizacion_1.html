@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo - Campañas de email programadas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/estilos_catalogo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilos_demo_automatizaciones.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilos_ayudas.css' %}">
+</head>
+<body>
+
+    {% if messages %}
+    <div class="contenedor-mensajes">
+        {% for message in messages %}
+            <div class="mensaje {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+<div class="contenedor">
+    <div class="cabecera">
+        <a href="{% url 'catalogo' %}" class="enlace_inicio">Catálogo</a>
+        <h1>Configuración de la campaña de email programada</h1>
+    </div>
+
+    {% if submitted %}
+        <div class="resultado">
+            {% if error %}
+                <p style="color:red;">Error al enviar: {{ error }}</p>
+            {% else %}
+                <p style="color:green;">Datos enviados al webhook (código HTTP: {{ status }}).</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="contenedor_formulario">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+            <label for="id_csv_file">Fichero CSV con destinatarios:</label>
+            <input type="file" name="csv_file" id="id_csv_file" accept=".csv" required>
+
+            <!-- Para que el usuario pueda descargar la plantilla-->
+            <div class="caja_csv">
+                <div class="caja_csv_cabecera">
+                    <span>Ejemplo de formato</span>
+                    <a href="{% static 'plantillas/plantilla_destinatarios.csv' %}" download>
+                        Descargar plantilla
+                    </a>
+                </div>
+                <!--Visualiza una imagen de ejemplo-->
+                <img src="{% static 'imagenes/ejemplo_csv.png' %}" 
+                     alt="Ejemplo CSV">
+            </div>
+        </div>
+
+            <div>
+                <label for="id_csv_file">Cuenta de correo de origen:</label>
+                <input type="email" name="email_origen" id="id_email_origen" value="{{ email_origen|default:'afacila.tfe@gmail.com' }}" readonly required>
+            </div>
+            <div>
+                <label for="id_asunto">Asunto:</label>
+                <input type="text" name="asunto" id="id_asunto" value="{{ asunto|default:'' }}" required>
+            </div>
+            <div>
+                <label for="id_mensaje">Mensaje:</label>
+                <textarea name="mensaje" id="id_mensaje" required>{{ mensaje|default:'' }}</textarea>
+            </div>
+            <div>
+                <label for="id_fecha_hora_inicio">Fecha y hora de inicio:</label>
+                <input type="datetime-local" name="fecha_hora_inicio" id="id_fecha_hora_inicio" value="{{ fecha_hora_inicio|default:'' }}" required>
+            </div>
+            <div>              
+                <!--<input type="text" name="intervalo" id="id_intervalo" value="{{ intervalo|default:'' }}" required>-->
+                <label for="id_intervalo_valor">Intervalo de envío (cada):</label>
+
+                <div class="intervalo_entrada">
+                    <!-- cantidad -->
+                    <input 
+                        type="number" 
+                        name="intervalo_valor" 
+                        id="id_intervalo_valor"
+                        min="1" 
+                        step="1"
+                        value="{{ intervalo_valor|default:1 }}"
+                        required>
+
+                    <!-- unidad -->
+                    <select name="intervalo_unidad" id="id_intervalo_unidad" required>
+                        <option value="minutos" {% if intervalo_unidad == "minutos" %}selected{% endif %}>minutos</option>
+                        <option value="horas" {% if intervalo_unidad == "horas" %}selected{% endif %}>horas</option>
+                        <option value="dias" {% if intervalo_unidad == "dias" %}selected{% endif %}>días</option>
+                        <option value="semanas" {% if intervalo_unidad == "semanas" %}selected{% endif %}>semanas</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="id_fecha_hora_fin">Fecha y hora de fin:</label>
+                <input type="datetime-local" name="fecha_hora_fin" id="id_fecha_hora_fin" value="{{ fecha_hora_fin|default:'' }}" required>
+            </div>
+            <div>
+                <button type="submit" class="boton boton_demo">Ejecutar automatización</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
