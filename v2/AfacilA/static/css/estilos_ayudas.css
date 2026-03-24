@@ -1,0 +1,33 @@
+.caja_csv {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 420px;
+    margin-top: 10px;
+    background: #fafafa;
+}
+
+.caja_csv_cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f0f0f0;
+    font-size: 14px;
+}
+
+.caja_csv_cabecera a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.caja_csv_cabecera a:hover {
+    text-decoration: underline;
+}
+
+.caja_csv img {
+    width: 50%;
+    display: block;
+    margin: 10px auto;
+}

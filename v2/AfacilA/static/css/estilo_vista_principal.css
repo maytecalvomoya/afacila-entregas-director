@@ -1,0 +1,93 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial;
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* Contenedor principal */
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80vh; /* altura del contenido central */
+    text-align: center;
+}
+
+/* Texto de bienvenida */
+.texto-general {
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-bottom: 40px;
+    max-width: 800px;
+    line-height: 1.5;
+}
+
+/* Grupo de botones centrado horizontal */
+.grupo_botones {
+    display: flex;
+    gap: 20px; /* separación entre botones */
+    margin-bottom: 40px; /* espacio sobre el footer */
+}
+
+button {
+    padding: 40px 80px;
+    font-size: 36px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #45a049 0%, #3e8e41 100%);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Footer inferior */
+.footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Header superior derecho */
+.cabecera_opciones {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+}
+
+.cabecera_opciones a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.cabecera_opciones a:hover {
+    text-decoration: underline;
+}

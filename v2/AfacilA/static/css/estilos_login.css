@@ -1,0 +1,58 @@
+/*Estilos que utilizan las pantallas de inicio de sesión y de registro.*/
+
+html,body {
+    height:100%;
+    margin:0;
+    font-family:Arial;
+    background:#f4f6f8
+}
+
+.contenedor-caja-login {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:75%;
+}
+
+.caja-login {
+    background:#fff;
+    width:100%;
+    max-width:420px;
+    padding:28px;
+    border-radius:10px;
+    box-shadow:0 8px 24px rgba(14,30,37,0.08)
+}
+
+.caja-login h2 {
+    margin:0 0 12px;
+    font-size:22px;
+    color:#111
+}
+
+.fila {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:12px
+}
+
+input[type="email"],
+input[type="password"] {
+    padding:12px;
+    border:1px solid #d7dbe0;
+    border-radius:6px;
+    font-size:14px
+}
+
+.ayuda {
+    font-size:13px;
+    color:#6b7280;
+    margin-top:10px;
+    text-align:center
+}
+.error {
+    color:#b00020;
+    font-size:14px;
+    margin-bottom:8px
+}
+/*@media (max-width:420px){.card{padding:20px;border-radius:8px}}*/

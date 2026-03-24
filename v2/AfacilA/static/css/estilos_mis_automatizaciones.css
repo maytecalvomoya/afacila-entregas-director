@@ -1,0 +1,89 @@
+html, body {
+    min-height: 100%;
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.contenedor {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.cajetin-automatizacion {
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espacio entre botones */
+    margin-top: 8px;
+}
+
+.formulario_acciones {
+    margin: 0;
+}
+
+.cabecera {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.cabecera h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #111;
+}
+
+.enlace_inicio {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.enlace_inicio:hover {
+    text-decoration: underline;
+}
+
+.boton {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0;
+    border-radius: 6px;
+    border: none;
+    color:#ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton-activar-desactivar {
+    background: #28a745;
+}
+
+.boton-configurar {
+    background: #dc3545;
+}
+
+.boton:hover {
+    opacity: 0.9;
+}
+
+.cabecera {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}

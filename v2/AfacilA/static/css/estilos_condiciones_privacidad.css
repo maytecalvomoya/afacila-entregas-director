@@ -1,0 +1,8 @@
+.contenedor-condiciones-privacidad {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}

@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html, body {
+    height: 100%;
+    font-family: Arial;
+    background: linear-gradient(135deg, #a8b0f3 0%, #8267c2 100%);
+    }
+
+/* Contenedor principal */
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80vh; /* altura del contenido central */
+    text-align: center;
+}
+
+/* Texto de bienvenida */
+.texto_bienvenida{
+    font-size: 24px;
+    color:ffffff;
+    margin-bottom: 40px;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+/* Estilo para los grupos de botones */
+.grupo_botones {
+    display: flex;
+    gap: 20px; /* separación entre los botones */
+    margin-bottom: 40px; /* Espacio desde la parte inferior */
+}
+
+.boton {
+    padding: 40px 80px;
+    font-size: 36px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    background:linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.boton:hover {
+    background: linear-gradient(135deg,45a049 0%,3e8e41 100%);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Pie en la parte inferior */
+.pie {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.pie a {
+    color: #FFFFFF;
+    margin: 0 10px;
+}
+
+.pie a:hover {
+    text-decoration: underline;
+}
+
+/* Cabecera superior derecha */
+.cabecera {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+}
+
+.cabecera a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.cabecera a:hover {
+    text-decoration: underline;
+}
