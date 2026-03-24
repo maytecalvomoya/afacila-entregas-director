@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=mayte
+      - N8N_BASIC_AUTH_PASSWORD=Luquito1
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - TZ=Europe/Madrid
+      - N8N_PUBLIC_API_ENABLED=true
+      - EXECUTIONS_PROCESS=main
+      - N8N_DEFAULT_LOCALE=en
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:
+    external: true
+    name: documentacindocker_n8n_data
+
+
