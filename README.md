@@ -7,7 +7,7 @@ Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, Python 3, D
 - Registrarse en ngrok para obtener un token (https://dashboard.ngrok.com/signup).
 - Obtengo un authtoken en: https://dashboard.ngrok.com/get-started/your-authtoken
 - Crear en C: una carpeta qeu se llame ngrok  mover allí ngrok.exe.
-- Abrir consola en C:\ngrok y ejecutar: ngrok config add-authtoken "el token"
+- Abrir consola en C:\ngrok y ejecutar: ngrok config add-authtoken 3BGQV2YiyZtjEg6JW4g8VPZfiku_2G3bS69Pw8yq5ucGiwrpp
 - Ejecutar ngrok http 8000
 - Durante todo el proceso, ngrok debe estar corriendo en una consola para exponer las urls de las imágenes a internet y que n8n pueda consultarlas.
 
