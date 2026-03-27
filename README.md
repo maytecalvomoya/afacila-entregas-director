@@ -4,7 +4,8 @@ Requisitos
 
 Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, Python 3, Django y  ngrok
 - Descargar ngrok desde https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip e instalarlo
-- Registrarse en ngrok para obtener un token (https://dashboard.ngrok.com/signup). El token es:
+- Registrarse en ngrok para obtener un token (https://dashboard.ngrok.com/signup).
+- Obtengo un authtoken en: https://dashboard.ngrok.com/get-started/your-authtoken
 - Crear en C: una carpeta qeu se llame ngrok  mover allí ngrok.exe.
 - Abrir consola en C:\ngrok y ejecutar: ngrok config add-authtoken "el token"
 - Ejecutar ngrok http 8000
