@@ -4,6 +4,12 @@ Requisitos
 
 Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, WSL2 con Ubuntu 22.04, Python 3, Django y  ngrok
 
+Instalación de Django:
+- Dentro de la carpeta del proyecto AfacilA se encuentra el fichero requierements.txt que contiene todas las dependencias del proyecto.
+- Ejecutar el backend Django. Crear un entorno virtual: python -m venv venv y activarlo: venv\Scripts\activate.
+- Instalar las dependencias del proyecto: pip install -r requirements.txt
+- Ejecutar el servidor Django: python manage.py runserver 0.0.0.0:8000. Esto es así por ngrok. El backend estará disponible en: https://unspreading-brock-nonobsessively.ngrok-free.dev/ (esto es así para permitir el acceso externo mediante ngrok).
+
 Instalación de ngrok:
 - Descargar ngrok desde https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip e instalarlo
 - Registrarse en ngrok para obtener un token (https://dashboard.ngrok.com/signup).
@@ -21,17 +27,12 @@ Instalación de Docker Desktop
 - Durante la instalación de Docker Desktop marcar "Use WSDL 2 instead of Hyper-V".
 - Configurar Docker con WSDL 2: Abrir Docker Desktop > Settings > General. Ir a Resources > WSDL Integration y activar la distro Ubuntu. Aplicar cambios y reiniciar Docker Desktop.
 - Verificar la instalación. Abrir consola y ejecutar: docker --version y docker run hello-world
-- En esta rama está el fichero docker-compose.yml. Acceder a la carpeta AfacilA desde consola y y ejecutar docker compose up -d para levantar n8n
-- Acceder a n8n desde el navegador: http:localhost:5678
-
 
 Ejecutar n8n con Docker: 
-- Abrir una terminal en la carpeta del proyecto y ejecutar: docker compose up -d Esto iniciará el contenedor de n8n.
-- Una vez iniciado, ejecutar en otra terminal: ngrok http 5678
+- Abrir una terminal en la carpeta del proyecto y ejecutar: docker compose up -d Esto iniciará el contenedor de n8n. El fichero docker-compose.yml está dentro de la carpeta del proyecto AfacilA.
 - Una vez iniciado, abrir en el navegador: http://localhost:5678
 
-Importar las automatizaciones Las automatizaciones se encuentran en la carpeta AUTOMATIZACIONES Para importarlas en n8n: Abrir la interfaz de n8n. Seleccionar Import workflow. Elegir el archivo JSON correspondiente.
-
-Ejecutar el backend Django Crear un entorno virtual: python -m venv venv Activar el entorno virtual. En Windows: venv\Scripts\activate En Linux o Mac: source venv/bin/activate Instalar las dependencias del proyecto: pip install -r requirements.txt Ejecutar el servidor Django: python manage.py runserver El backend estará disponible en: http://127.0.0.1:8000
+Importar las automatizaciones:
+Las automatizaciones se encuentran en la carpeta AUTOMATIZACIONES Para importarlas en n8n: Abrir la interfaz de n8n en http://localhost:5678. Seleccionar Import workflow. Elegir el archivo JSON correspondiente.
 
 Estructura del repositorio docker-compose.yml → configuración del contenedor de n8n requirements.txt → dependencias del backend Django AUTOMATIZACIONES → workflows exportados de n8n
