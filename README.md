@@ -2,7 +2,9 @@ AFACILA – Automatizaciones con n8n
 
 Requisitos
 
-Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, Python 3, Django y  ngrok
+Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, WSL2 con Ubuntu 22.04, Python 3, Django y  ngrok
+
+Instalación de ngrok:
 - Descargar ngrok desde https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip e instalarlo
 - Registrarse en ngrok para obtener un token (https://dashboard.ngrok.com/signup).
 - Obtengo un authtoken en: https://dashboard.ngrok.com/get-started/your-authtoken
@@ -10,6 +12,18 @@ Antes de ejecutar el proyecto es necesario instalar: Docker Desktop, Python 3, D
 - Abrir consola en C:\ngrok y ejecutar: ngrok config add-authtoken 3BGQV2YiyZtjEg6JW4g8VPZfiku_2G3bS69Pw8yq5ucGiwrpp
 - Ejecutar ngrok http 8000
 - Durante todo el proceso, ngrok debe estar corriendo en una consola para exponer las urls de las imágenes a internet y que n8n pueda consultarlas.
+
+Instalación de Docker Desktop
+- Debe estar habilitada la virtualización en BIOS/UEFI
+- Debe estar habilitado el componente "Plataforma de máquina virtual" en Windows. Para ello, abrir PowerShell como administrador y ejecutar: dism.exe /online/enable-feature /featurename:VirtualMachinePlatform /all /norestart. Reiniciar PC.
+- instalar WSL (distro de linux en windows) con wsl --install
+- Verificar que la distro está en WSL2 con wsl -list -verbose. Si aparece la versión 1 hay que convertirla a 2 con wsl -set-version Ubuntu-22.04 2
+- Durante la instalación de Docker Desktop marcar "Use WSDL 2 instead of Hyper-V".
+- Configurar Docker con WSDL 2: Abrir Docker Desktop > Settings > General. Ir a Resources > WSDL Integration y activar la distro Ubuntu. Aplicar cambios y reiniciar Docker Desktop.
+- Verificar la instalación. Abrir consola y ejecutar: docker --version y docker run hello-world
+- En esta rama está el fichero docker-compose.yml. Acceder a la carpeta AfacilA desde consola y y ejecutar docker compose up -d para levantar n8n
+- Acceder a n8n desde el navegador: http:localhost:5678
+
 
 Ejecutar n8n con Docker: 
 - Abrir una terminal en la carpeta del proyecto y ejecutar: docker compose up -d Esto iniciará el contenedor de n8n.
